@@ -123,12 +123,16 @@ class extract_slides:
                     if diff3 > self.conf:
 
                         if first:
-                            self.first_img = Image.fromarray(np.uint8(frame)).convert('RGB')
+                            # Конвертируем кадр из BGR в RGB
+                            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                            self.first_img = Image.fromarray(frame_rgb)
                             print("\nPlease check the preview image for the area you want to be compared")
-                            cv2.imshow('image', currg)
+                            cv2.imshow('image', frame[self.coor[0][0]:self.coor[1][0],self.coor[0][1]:self.coor[1][1],:])
                             cv2.waitKey(0)
                         prev = frame
-                        frame = Image.fromarray(np.uint8(frame)).convert('RGB')
+                        # Конвертируем кадр из BGR в RGB перед созданием изображения Pillow
+                        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                        frame = Image.fromarray(frame_rgb)
                         if not first:
                             self.images.append(frame)
                         else:
